@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import 'package:flutter/material.dart';
 import 'package:test_app/Stateful/Assignment1/assignment1.dart';
 import 'package:test_app/Stateful/Assignment2/assignment2.dart';
