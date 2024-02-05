@@ -20,7 +20,78 @@ class QuizApp extends StatefulWidget {
 class _QuizApp extends State<QuizApp> {
   int queNo = 1;
   int score = 0;
-  String question = 'What is ur name ';
+  List<List<String>> que = [
+    [
+      'Who developed the Flutter Framework and continues to maintain it today?',
+      'Google',
+      'Facebook',
+      'Microsoft',
+      'Adobe',
+    ],
+    [
+      'Which programming language is used to build Flutter applications?',
+      'Dart',
+      'Java',
+      'Swift',
+      'Kotlin'
+    ],
+    [
+      'How many types of widgets are there in Flutter?',
+      'Two',
+      'Three',
+      'Four',
+      'Five'
+    ],
+    [
+      'When building for iOS, Flutter is restricted to an __ compilation strategy',
+      'Just-in-Time (JIT)',
+      'Interpreted',
+      'Dynamic',
+      'Ahead-of-Time (AOT)',
+    ],
+    [
+      'A sequence of asynchronous Flutter events is known as a:',
+      'Stream',
+      'Coroutine',
+      'Callback',
+      'Future'
+    ],
+    [
+      'Access to a cloud database through Flutter is available through which service?',
+      'Firebase',
+      'AWS DynamoDB',
+      'Microsoft Azure Cosmos DB',
+      'Google Cloud Firestore'
+    ],
+    [
+      'What are some key advantages of Flutter over alternate frameworks?',
+      'Cross-platform development',
+      'Hot reload feature',
+      'Rich set of customizable widgets',
+      'Strong community and support'
+    ],
+    [
+      'What element is used as an identifier for components when programming in Flutter?',
+      'Key',
+      'ID',
+      'Tag',
+      'WidgetID'
+    ],
+    [
+      'What type of test can examine your code as a complete system?',
+      'Unit testing',
+      'Integration testing',
+      'Widget testing',
+      'System testing'
+    ],
+    [
+      'What type of Flutter animation allows you to represent real-world behavior?',
+      'Tween Animation',
+      'Physics-based Animation',
+      'Curved Animation',
+      'Rotation Animation'
+    ],
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +103,8 @@ class _QuizApp extends State<QuizApp> {
           onPressed: () {
             setState(() {
               queNo++;
-              if (queNo == 11) {
-                queNo = 1;
+              if (queNo >= 11) {
+                queNo = 10;
               }
             });
           },
@@ -43,50 +114,43 @@ class _QuizApp extends State<QuizApp> {
           title: const Text('Quiz App'),
           actions: const [Icon(Icons.menu)],
         ),
-        body: Column(children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [Text('Score : $score/10')],
+        body: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [Text('Score : $score/10')],
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [Text('Que : $queNo : $question')],
+            Padding(
+              padding: const EdgeInsets.all(30.0),
+              child: SizedBox(
+                  height: 40,
+                  child: Text('Que : $queNo : ${que[queNo - 1][0]}')),
             ),
-          ),
-          const Card(
-            child: ListTile(
-              tileColor: Colors.blueGrey,
-              leading: Icon(Icons.album_rounded),
-              title: Text('Option 1'),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                  onPressed: () {}, child: Text('A : ${que[queNo - 1][1]}')),
             ),
-          ),
-          const Card(
-            child: ListTile(
-              tileColor: Colors.blueGrey,
-              leading: Icon(Icons.album_rounded),
-              title: Text('Option 2'),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                  onPressed: () {}, child: Text('B : ${que[queNo - 1][2]}')),
             ),
-          ),
-          const Card(
-            child: ListTile(
-              tileColor: Colors.blueGrey,
-              leading: Icon(Icons.album_rounded),
-              title: Text('Option 3'),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                  onPressed: () {}, child: Text('C : ${que[queNo - 1][3]}')),
             ),
-          ),
-          const Card(
-            child: ListTile(
-              tileColor: Colors.blueGrey,
-              leading: Icon(Icons.album_rounded),
-              title: Text('Option 4'),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                  onPressed: () {}, child: Text('D : ${que[queNo - 1][4]}')),
             ),
-          ),
-        ]),
+          ],
+        ),
       ),
     );
   }
