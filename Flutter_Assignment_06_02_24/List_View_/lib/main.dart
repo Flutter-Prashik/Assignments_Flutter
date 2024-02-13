@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:listviewincrimentation/listadd.dart';
 import 'package:listviewincrimentation/listlist.dart';
-import 'package:listviewincrimentation/listview.dart';
 
 void main() {
   runApp(const MainApp());
