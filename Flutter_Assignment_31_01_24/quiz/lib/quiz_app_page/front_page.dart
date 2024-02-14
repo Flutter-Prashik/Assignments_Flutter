@@ -1,16 +1,14 @@
+import 'question_module.dart';
 import 'package:flutter/material.dart';
-
-import 'congratulations.dart';
-import 'question_models.dart';
 
 class QuizAppPage extends StatefulWidget {
   const QuizAppPage({super.key});
 
   @override
-  State<StatefulWidget> createState() => _QuizAppPageState();
+  State<QuizAppPage> createState() => _QuizAppPageState();
 }
 
-class _QuizAppPageState extends State<StatefulWidget> {
+class _QuizAppPageState extends State<QuizAppPage> {
   List<QuestionModules> list = [
     const QuestionModules(
         question: 'What is the current year',
@@ -71,7 +69,9 @@ class _QuizAppPageState extends State<StatefulWidget> {
           if (optionChossen == -1) {
             optionChossen = option;
           }
-          setState(() {});
+          setState(() {
+            result;
+          });
         },
         child: SizedBox(
           width: 250,
@@ -88,23 +88,87 @@ class _QuizAppPageState extends State<StatefulWidget> {
     );
   }
 
+  congratsPopUp() async {
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text(
+            'Congratulations ! ',
+            style: TextStyle(fontWeight: FontWeight.w500),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.asset('assets/congo.png'),
+              Text(
+                'Congratulations ! You have scored $result of ${list.length}',
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  result = 0;
+                  questionIndex = 0;
+                });
+                Navigator.pop(context);
+              },
+              child: const Text('Reset'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  wroungPopUp() async {
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Null Input !'),
+          content: const Text('Please chose the option from above'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Okay !'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const Icon(Icons.menu_open_rounded),
+        leading: const Icon(
+          Icons.menu_open_rounded,
+          color: Colors.white,
+          size: 30,
+        ),
         title: const Text(
           'Quiz App',
           style: TextStyle(
             fontWeight: FontWeight.w800,
-            fontSize: 18,
+            fontSize: 26,
+            color: Colors.white,
           ),
         ),
         backgroundColor: const Color.fromRGBO(43, 64, 86, 1),
         actions: const [
           Padding(
             padding: EdgeInsets.only(right: 20),
-            child: Icon(Icons.quiz_outlined),
+            child: Icon(
+              Icons.quiz_outlined,
+              color: Colors.white,
+              size: 30,
+            ),
           )
         ],
         centerTitle: true,
@@ -112,32 +176,58 @@ class _QuizAppPageState extends State<StatefulWidget> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           setState(() {
-            optionChossen = -1;
-            questionIndex++;
-            if (questionIndex >= list.length) {
-              quizScreen = false;
+            if (optionChossen == -1) {
+              wroungPopUp();
+            } else {
+              questionIndex++;
+              if (questionIndex == 5) {
+                questionIndex = 4;
+                congratsPopUp();
+              }
             }
+
+            optionChossen = -1;
           });
         },
         child: const Icon(Icons.navigate_next),
       ),
-      body: (quizScreen)
-          ? Container(
-              color: const Color.fromRGBO(37, 42, 64, 1),
-              height: double.infinity,
-              width: double.infinity,
-              child: Padding(
-                padding: const EdgeInsets.all(20),
+      body: Container(
+        color: const Color.fromRGBO(37, 42, 64, 1),
+        height: double.infinity,
+        width: double.infinity,
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 50, bottom: 50),
+                child: Text(
+                  'Score : $result/5',
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.only(
+                    top: 50, bottom: 50, right: 20, left: 20),
+                decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: const BorderRadius.all(Radius.circular(30)),
+                    border: Border.all(color: Colors.white, width: 2),
+                    boxShadow: const [
+                      BoxShadow(
+                          color: Colors.grey,
+                          offset: Offset(10, 10),
+                          blurRadius: 8),
+                      BoxShadow(
+                          color: Color.fromARGB(255, 245, 245, 245),
+                          offset: Offset(10, 10),
+                          blurRadius: 8)
+                    ]),
                 child: Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'Question ${questionIndex + 1}/5',
-                        style:
-                            const TextStyle(color: Colors.white, fontSize: 18),
-                      ),
-                    ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
@@ -155,8 +245,10 @@ class _QuizAppPageState extends State<StatefulWidget> {
                   ],
                 ),
               ),
-            )
-          : const Congratulations(),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
