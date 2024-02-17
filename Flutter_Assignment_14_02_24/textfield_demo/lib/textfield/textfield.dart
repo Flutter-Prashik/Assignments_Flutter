@@ -59,11 +59,12 @@ class _TextFieldDemoStateState extends State<TextFieldDemo> {
             const SizedBox(
               height: 20,
             ),
-            Container(
-              width: double.infinity,
-              height: 1,
-              color: Colors.black,
-            ),
+            // Container(
+            //   width: double.infinity,
+            //   height: 1,
+            //   color: Colors.black,
+            // ),
+            const Divider(),
             Expanded(
               child: ListView.builder(
                 itemCount: list.length,
