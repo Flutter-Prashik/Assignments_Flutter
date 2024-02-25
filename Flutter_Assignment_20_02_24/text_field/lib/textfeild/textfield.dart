@@ -10,6 +10,9 @@ class TextFieldDemo extends StatefulWidget {
   }
 }
 
+int count = 1;
+bool secscreen = true;
+
 class _TextFieldDemo extends State<TextFieldDemo> {
   void initState() {
     super.initState();
@@ -31,7 +34,64 @@ class _TextFieldDemo extends State<TextFieldDemo> {
     print('---In deactivate()---');
   }
 
-  int count = 1;
+  @override
+  Widget build(BuildContext context) {
+    print('---In build()---');
+    if (secscreen) {
+      return const Screen1();
+    } else {
+      return Screen2();
+    }
+  }
+}
+
+class Screen2 extends StatefulWidget {
+  const Screen2({super.key});
+
+  @override
+  State<Screen2> createState() => _Screen2State();
+}
+
+class _Screen2State extends State<Screen2> {
+  @override
+  Widget build(BuildContext context) {
+    print('---In build()---');
+    return Scaffold(
+      body: const Center(
+        child: Text('Second Screen'),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          setState(
+            () {
+              count = 1;
+              secscreen = true;
+            },
+          );
+        },
+      ),
+    );
+  }
+}
+
+class Screen1 extends StatefulWidget {
+  const Screen1({super.key});
+
+  @override
+  State<Screen1> createState() => _Screen1State();
+}
+
+class _Screen1State extends State<Screen1> {
+  void dispose() {
+    super.dispose();
+    print('---In dispose()---');
+  }
+
+  void deactivate() {
+    super.deactivate();
+    print('---In deactivate()---');
+  }
+
   @override
   Widget build(BuildContext context) {
     print('---In build()---');
@@ -65,7 +125,7 @@ class _TextFieldDemo extends State<TextFieldDemo> {
                   print("--- In setState() ---");
                   count++;
                   if (count > 4) {
-                    count = 1;
+                    secscreen = false;
                   }
                 });
               },
