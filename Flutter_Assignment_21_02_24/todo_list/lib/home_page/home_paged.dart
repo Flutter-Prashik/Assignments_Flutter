@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:todo_list/home_page/card.dart';
+import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -9,22 +10,13 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-List list = [
-  [
-    'Lorem Ipsum is simply setting industry',
-    'Simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry"s standard dummy text ever since the 1500s',
-    '10 Jan 2024'
-  ],
-  [
-    'Lorem Ipsum is simply setting industry',
-    'Simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry"s standard dummy text ever since the 1500s',
-    '10 Jan 2024'
-  ],
-  [
-    'Lorem Ipsum is simply setting industry',
-    'Simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry"s standard dummy text ever since the 1500s',
-    '10 Jan 2024'
-  ]
+List<CardCostumized> list = [
+  const CardCostumized(
+      title: 'Lorem Ipsum is simply setting industry. ',
+      description:
+          'Simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry"s standard dummy text ever since the 1500s',
+      date: '10 July 2023',
+      index: 0)
 ];
 
 class _HomePageState extends State<HomePage> {
@@ -159,6 +151,20 @@ class _HomePageState extends State<HomePage> {
                           height: 40,
                           width: 330,
                           child: TextField(
+                            onTap: () async {
+                              DateTime? pickedDate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2024),
+                                lastDate: DateTime(2025),
+                              );
+                              String formatedDate =
+                                  DateFormat.yMMMd().format(pickedDate!);
+                              setState(() {
+                                dateEditingController.text = formatedDate;
+                              });
+                            },
+                            readOnly: true,
                             controller: dateEditingController,
                             style: GoogleFonts.quicksand(
                                 fontSize: 12, fontWeight: FontWeight.w500),
@@ -184,11 +190,12 @@ class _HomePageState extends State<HomePage> {
                         child: ElevatedButton(
                           onPressed: () {
                             setState(() {
-                              list.add([
-                                titleEditingController.text,
-                                descriptionEditingController.text,
-                                dateEditingController.text
-                              ]);
+                              list.add(CardCostumized(
+                                  title: titleEditingController.text,
+                                  description:
+                                      descriptionEditingController.text,
+                                  date: dateEditingController.text,
+                                  index: 0));
                               Navigator.pop(context);
                               titleEditingController.clear();
                               descriptionEditingController.clear();
@@ -226,7 +233,11 @@ class _HomePageState extends State<HomePage> {
         child: ListView.builder(
           itemCount: list.length,
           itemBuilder: ((context, index) {
-            return CardCostumized(index: index);
+            return CardCostumized(
+                title: titleEditingController.text,
+                description: descriptionEditingController.text,
+                date: dateEditingController.text,
+                index: index);
           }),
         ),
       ),

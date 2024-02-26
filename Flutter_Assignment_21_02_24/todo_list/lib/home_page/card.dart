@@ -4,24 +4,48 @@ import 'package:todo_list/home_page/home_paged.dart';
 
 class CardCostumized extends StatefulWidget {
   final int index;
-  const CardCostumized({super.key, required this.index});
+  final String title;
+  final String description;
+  final String date;
+  const CardCostumized({
+    super.key,
+    required this.title,
+    required this.description,
+    required this.date,
+    required this.index,
+  });
 
   @override
-  State<CardCostumized> createState() => _CardCostumizedState(index);
+  State<CardCostumized> createState() => _CardCostumizedState(
+      title: title, description: description, date: date, index: index);
 }
 
 class _CardCostumizedState extends State<CardCostumized> {
-  _CardCostumizedState(this.index);
+  _CardCostumizedState({
+    required this.title,
+    required this.description,
+    required this.date,
+    required this.index,
+  });
+  final String title;
+  final String description;
+  final String date;
   final int index;
+
+  List colorList = [
+    const Color(0xFFFAE8E8),
+    const Color(0xffE8EDFA),
+    const Color(0xffFAF9E8),
+    const Color(0xffFAE8FA),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
         decoration: BoxDecoration(
-          color: (index % 2 == 0)
-              ? const Color(0xffFAE8E8)
-              : const Color(0xffE8EDFA),
+          color: colorList[index % colorList.length],
           borderRadius: BorderRadius.circular(10),
           boxShadow: const [
             BoxShadow(
@@ -55,7 +79,7 @@ class _CardCostumizedState extends State<CardCostumized> {
                     ),
                   ),
                   Text(
-                    list[index][2],
+                    list[index].date,
                     style: GoogleFonts.quicksand(
                       fontWeight: FontWeight.w500,
                       fontSize: 10,
@@ -72,12 +96,12 @@ class _CardCostumizedState extends State<CardCostumized> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      list[index][0],
+                      list[index].title,
                       style: GoogleFonts.quicksand(
                           fontSize: 12, fontWeight: FontWeight.w700),
                     ),
                     Text(
-                      list[index][1],
+                      list[index].description,
                       style: GoogleFonts.quicksand(
                         fontSize: 10,
                         fontWeight: FontWeight.w500,
