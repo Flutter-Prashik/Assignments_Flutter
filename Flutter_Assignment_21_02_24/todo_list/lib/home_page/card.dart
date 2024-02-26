@@ -30,7 +30,7 @@ class _CardCostumizedState extends State<CardCostumized> {
   final String title;
   final String description;
   final String date;
-  final int index;
+  int index;
 
   List colorList = [
     const Color(0xFFFAE8E8),
@@ -107,21 +107,30 @@ class _CardCostumizedState extends State<CardCostumized> {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    const Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Icon(
-                          Icons.edit,
-                          size: 15,
-                          color: Color(0xff008B94),
+                        GestureDetector(
+                          child: const Icon(
+                            Icons.edit,
+                            size: 15,
+                            color: Color(0xff008B94),
+                          ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 5,
                         ),
-                        Icon(
-                          Icons.delete_outline_outlined,
-                          size: 15,
-                          color: Color(0xff008B94),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              list.removeAt(index);
+                            });
+                          },
+                          child: const Icon(
+                            Icons.delete_outline_outlined,
+                            size: 15,
+                            color: Color(0xff008B94),
+                          ),
                         )
                       ],
                     )

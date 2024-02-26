@@ -16,6 +16,24 @@ List<CardCostumized> list = [
       description:
           'Simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry"s standard dummy text ever since the 1500s',
       date: '10 July 2023',
+      index: 0),
+  const CardCostumized(
+      title: 'Lorem Ipsum is simply setting industry. ',
+      description:
+          'Simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry"s standard dummy text ever since the 1500s',
+      date: '10 July 2023',
+      index: 0),
+  const CardCostumized(
+      title: 'Lorem Ipsum is simply setting industry. ',
+      description:
+          'Simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry"s standard dummy text ever since the 1500s',
+      date: '10 July 2023',
+      index: 0),
+  const CardCostumized(
+      title: 'Lorem Ipsum is simply setting industry. ',
+      description:
+          'Simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry"s standard dummy text ever since the 1500s',
+      date: '10 July 2023',
       index: 0)
 ];
 
@@ -47,9 +65,10 @@ class _HomePageState extends State<HomePage> {
               ),
               context: context,
               builder: (BuildContext context) {
-                return SizedBox(
-                  height: 363,
+                return Padding(
+                  padding: MediaQuery.of(context).viewInsets,
                   child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Padding(
