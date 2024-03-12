@@ -28,7 +28,7 @@ class Player {
 }
 
 Future insertPlayer(Player obj) async {
-  final localDB = database;
+  final localDB = await database;
   await localDB.insert(
     'Player',
     obj.playerMap(),
@@ -47,7 +47,7 @@ Future getPlayerData() async {
         jerNo: listPlayers[index]['jerNo'],
         runs: listPlayers[index]['runs'],
         avg: listPlayers[index]['avg'],
-      );
+      ).toString();
     },
   );
 }

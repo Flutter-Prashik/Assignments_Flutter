@@ -1,84 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-void main() {
+import 'database_connection.dart';
+
+List<Map<String, dynamic>> list = [];
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await connection();
   runApp(const MainApp());
+  ToDoModalClass obj = ToDoModalClass(
+    title: 'Lorem Ipsum is simply setting industry. ',
+    description:
+        'Simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry"s standard dummy text ever since the 1500s',
+    date: '10 July 2023',
+  );
+  await addTask(obj);
 }
-
-class ToDoModalClass {
-  String title;
-  String description;
-  String date;
-  bool isSelected;
-  ToDoModalClass({
-    required this.title,
-    required this.description,
-    required this.date,
-    required this.isSelected,
-  });
-}
-
-List<ToDoModalClass> list = [
-  ToDoModalClass(
-    title: 'Lorem Ipsum is simply setting industry. ',
-    description:
-        'Simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry"s standard dummy text ever since the 1500s',
-    date: '10 July 2023',
-    isSelected: false,
-  ),
-  ToDoModalClass(
-    title: 'Lorem Ipsum is simply setting industry. ',
-    description:
-        'Simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry"s standard dummy text ever since the 1500s',
-    date: '10 July 2023',
-    isSelected: false,
-  ),
-  ToDoModalClass(
-    title: 'Lorem Ipsum is simply setting industry. ',
-    description:
-        'Simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry"s standard dummy text ever since the 1500s',
-    date: '10 July 2023',
-    isSelected: false,
-  ),
-  ToDoModalClass(
-    title: 'Lorem Ipsum is simply setting industry. ',
-    description:
-        'Simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry"s standard dummy text ever since the 1500s',
-    date: '10 July 2023',
-    isSelected: false,
-  ),
-  ToDoModalClass(
-    title: 'Lorem Ipsum is simply setting industry. ',
-    description:
-        'Simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry"s standard dummy text ever since the 1500s',
-    date: '10 July 2023',
-    isSelected: false,
-  ),
-  ToDoModalClass(
-    title: 'Lorem Ipsum is simply setting industry. ',
-    description:
-        'Simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry"s standard dummy text ever since the 1500s',
-    date: '10 July 2023',
-    isSelected: false,
-  ),
-  ToDoModalClass(
-    title: 'Lorem Ipsum is simply setting industry. ',
-    description:
-        'Simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry"s standard dummy text ever since the 1500s',
-    date: '10 July 2023',
-    isSelected: false,
-  ),
-  ToDoModalClass(
-    title: 'Lorem Ipsum is simply setting industry. ',
-    description:
-        'Simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry"s standard dummy text ever since the 1500s',
-    date: '10 July 2023',
-    isSelected: false,
-  )
-];
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
@@ -107,12 +47,12 @@ class _HomePageState extends State<HomePage> {
 
   bool clicked = false;
 
-  void editCard(ToDoModalClass toDoModalObj) {
+  void editCard(Map<String, dynamic> toDoModalObj, BuildContext context) {
     setState(() {
-      modalbottomsheet(true, toDoModalObj);
-      titleEditingController.text = toDoModalObj.title;
-      descriptionEditingController.text = toDoModalObj.description;
-      dateEditingController.text = toDoModalObj.date;
+      modalbottomsheet(true, context, toDoModalObj);
+      titleEditingController.text = toDoModalObj['title'];
+      descriptionEditingController.text = toDoModalObj["description"];
+      dateEditingController.text = toDoModalObj['date'];
     });
   }
 
@@ -122,23 +62,33 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void submit(bool isEdit, [ToDoModalClass? toDoModalobj]) {
+  void submit(bool isEdit, [Map<String, dynamic>? toDoModalobj]) {
     if (titleEditingController.text.trim().isNotEmpty &&
         descriptionEditingController.text.trim().isNotEmpty &&
         dateEditingController.text.trim().isNotEmpty) {
       if (!isEdit) {
-        list.add(
-          ToDoModalClass(
-            title: titleEditingController.text.trim(),
-            description: descriptionEditingController.text.trim(),
-            date: dateEditingController.text.trim(),
-            isSelected: false,
-          ),
-        );
+        setState(() {
+          addTask(
+            ToDoModalClass(
+              title: titleEditingController.text.trim(),
+              description: descriptionEditingController.text.trim(),
+              date: dateEditingController.text.trim(),
+            ),
+          );
+        });
+
+        // list.add(
+        //   ToDoModalClass(
+        //     title: titleEditingController.text.trim(),
+        //     description: descriptionEditingController.text.trim(),
+        //     date: dateEditingController.text.trim(),
+        //     isSelected: false,
+        //   ),
+        // );
       } else {
-        toDoModalobj!.title = titleEditingController.text.trim();
-        toDoModalobj.description = descriptionEditingController.text.trim();
-        toDoModalobj.date = dateEditingController.text.trim();
+        toDoModalobj!['title'] = titleEditingController.text.trim();
+        toDoModalobj['description'] = descriptionEditingController.text.trim();
+        toDoModalobj['date'] = dateEditingController.text.trim();
       }
     }
   }
@@ -149,7 +99,7 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton(
         shape: const CircleBorder(),
         onPressed: () {
-          modalbottomsheet(false);
+          modalbottomsheet(false, context);
         },
         backgroundColor: const Color.fromRGBO(111, 81, 255, 1),
         child: const Icon(
@@ -206,7 +156,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 Container(
-                  height: 750,
+                  height: 686,
                   padding: const EdgeInsets.symmetric(vertical: 30),
                   width: double.infinity,
                   decoration: const BoxDecoration(
@@ -221,7 +171,7 @@ class _HomePageState extends State<HomePage> {
                     itemBuilder: ((context, index) {
                       return Slidable(
                           endActionPane: ActionPane(
-                            extentRatio: 0.15,
+                            extentRatio: 0.16,
                             motion: const ScrollMotion(),
                             children: [
                               Padding(
@@ -234,7 +184,7 @@ class _HomePageState extends State<HomePage> {
                                     GestureDetector(
                                       onTap: () {
                                         setState(() {
-                                          editCard(list[index]);
+                                          editCard(list[index], context);
                                         });
                                       },
                                       child: Container(
@@ -260,7 +210,7 @@ class _HomePageState extends State<HomePage> {
                                     GestureDetector(
                                       onTap: () {
                                         setState(() {
-                                          deleteCard(list[index]);
+                                          // deleteCard(list[index]);
                                         });
                                       },
                                       child: Container(
@@ -300,7 +250,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void modalbottomsheet(bool isEdit, [ToDoModalClass? toDoModalobj]) {
+  void modalbottomsheet(bool isEdit, BuildContext context,
+      [Map<String, dynamic>? toDoModalobj]) {
     showModalBottomSheet<void>(
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
@@ -508,7 +459,7 @@ class _HomePageState extends State<HomePage> {
     return GestureDetector(
       onTap: () {
         setState(() {
-          list[index].isSelected = !list[index].isSelected;
+          list[index]['isSelected'] = !list[index]['isSelected'];
         });
       },
       child: Padding(
@@ -554,7 +505,7 @@ class _HomePageState extends State<HomePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        list[index].title,
+                        list[index]["title"],
                         style: GoogleFonts.quicksand(
                           fontWeight: FontWeight.w400,
                           fontSize: 11,
@@ -562,7 +513,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       Text(
-                        list[index].description,
+                        list[index]['description'],
                         style: GoogleFonts.quicksand(
                           fontWeight: FontWeight.w400,
                           fontSize: 9,
@@ -570,7 +521,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       Text(
-                        list[index].date,
+                        list[index]['date'],
                         style: GoogleFonts.quicksand(
                           fontWeight: FontWeight.w400,
                           fontSize: 9,
@@ -590,17 +541,17 @@ class _HomePageState extends State<HomePage> {
                     shape: BoxShape.circle,
                     border: Border.all(
                       width: 1,
-                      color: (!list[index].isSelected)
-                          ? const Color.fromRGBO(0, 0, 0, 0.5)
-                          : Colors.white,
+                      // color: (!list[index]['isSelected'])
+                      //     ? const Color.fromRGBO(0, 0, 0, 0.5)
+                      //     : Colors.white,
                     ),
                   ),
-                  child: (list[index].isSelected)
-                      ? const Icon(
-                          Icons.check_circle,
-                          color: Colors.green,
-                        )
-                      : const SizedBox(),
+                  // child: (list[index]["isSelected"])
+                  //     ? const Icon(
+                  //         Icons.check_circle,
+                  //         color: Colors.green,
+                  //       )
+                  //     : const SizedBox(),
                 ),
               )
             ],
