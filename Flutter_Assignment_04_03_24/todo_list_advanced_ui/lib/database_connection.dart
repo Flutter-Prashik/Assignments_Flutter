@@ -66,3 +66,26 @@ Future addTask(ToDoModalClass obj) async {
   );
   list = await localDB.query('Tasks');
 }
+
+Future editTask(ToDoModalClass obj) async {
+  final localDB = await database;
+  await localDB.update(
+    'Tasks',
+    obj.dataMap(),
+    where: 'cardNo = ?',
+    whereArgs: [obj.cardNo],
+  );
+  list = await localDB.query('Tasks');
+}
+
+Future deleteTask(int obj) async {
+  final localDB = await database;
+  await localDB.delete(
+    'Tasks',
+    where: 'cardNo = ?',
+    whereArgs: [obj],
+  );
+  list = await localDB.query('Tasks');
+  print(list);
+  print('deleted item successful');
+}

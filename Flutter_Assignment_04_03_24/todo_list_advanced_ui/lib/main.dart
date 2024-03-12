@@ -11,13 +11,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await connection();
   runApp(const MainApp());
-  ToDoModalClass obj = ToDoModalClass(
-    title: 'Lorem Ipsum is simply setting industry. ',
-    description:
-        'Simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry"s standard dummy text ever since the 1500s',
-    date: '10 July 2023',
-  );
-  await addTask(obj);
 }
 
 class MainApp extends StatelessWidget {
@@ -56,11 +49,11 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void deleteCard(ToDoModalClass toDoModalobj) {
-    setState(() {
-      list.remove(toDoModalobj);
-    });
-  }
+  // void deleteCard(Map<String, dynamic> toDoModalobj) {
+  //   setState(() {
+  //     delteTask(toDoModalobj['cardNo']);
+  //   });
+  // }
 
   void submit(bool isEdit, [Map<String, dynamic>? toDoModalobj]) {
     if (titleEditingController.text.trim().isNotEmpty &&
@@ -76,19 +69,21 @@ class _HomePageState extends State<HomePage> {
             ),
           );
         });
-
-        // list.add(
-        //   ToDoModalClass(
-        //     title: titleEditingController.text.trim(),
-        //     description: descriptionEditingController.text.trim(),
-        //     date: dateEditingController.text.trim(),
-        //     isSelected: false,
-        //   ),
-        // );
       } else {
-        toDoModalobj!['title'] = titleEditingController.text.trim();
-        toDoModalobj['description'] = descriptionEditingController.text.trim();
-        toDoModalobj['date'] = dateEditingController.text.trim();
+        setState(() {
+          toDoModalobj!['title'] = titleEditingController.text.trim();
+          toDoModalobj['description'] =
+              descriptionEditingController.text.trim();
+          toDoModalobj['date'] = dateEditingController.text.trim();
+          editTask(
+            ToDoModalClass(
+              title: titleEditingController.text.trim(),
+              description: descriptionEditingController.text.trim(),
+              date: dateEditingController.text.trim(),
+              cardNo: toDoModalobj['cardNo'],
+            ),
+          );
+        });
       }
     }
   }
@@ -210,7 +205,7 @@ class _HomePageState extends State<HomePage> {
                                     GestureDetector(
                                       onTap: () {
                                         setState(() {
-                                          // deleteCard(list[index]);
+                                          deleteTask(list[index]['cardNo']);
                                         });
                                       },
                                       child: Container(
@@ -458,9 +453,9 @@ class _HomePageState extends State<HomePage> {
   Widget myCard(int index) {
     return GestureDetector(
       onTap: () {
-        setState(() {
-          list[index]['isSelected'] = !list[index]['isSelected'];
-        });
+        // setState(() {
+        //   list[index]['isSelected'] = !list[index]['isSelected'];
+        // });
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
