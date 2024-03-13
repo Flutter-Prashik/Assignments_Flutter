@@ -71,16 +71,16 @@ class _HomePageState extends State<HomePage> {
         });
       } else {
         setState(() {
-          toDoModalobj!['title'] = titleEditingController.text.trim();
-          toDoModalobj['description'] =
-              descriptionEditingController.text.trim();
-          toDoModalobj['date'] = dateEditingController.text.trim();
+          // toDoModalobj!['title'] = titleEditingController.text.trim();
+          // toDoModalobj['description'] =
+          //     descriptionEditingController.text.trim();
+          // toDoModalobj['date'] = dateEditingController.text.trim();
           editTask(
             ToDoModalClass(
               title: titleEditingController.text.trim(),
               description: descriptionEditingController.text.trim(),
               date: dateEditingController.text.trim(),
-              cardNo: toDoModalobj['cardNo'],
+              cardNo: toDoModalobj!['cardNo'],
             ),
           );
         });

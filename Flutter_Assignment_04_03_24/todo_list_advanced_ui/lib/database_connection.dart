@@ -48,7 +48,7 @@ Future<void> connection() async {
           cardNo INTEGER PRIMARY KEY AUTOINCREMENT,
           title TEXT,
           description TEXT,
-          date TEXT,
+          date TEXT
         )''');
     },
   );
